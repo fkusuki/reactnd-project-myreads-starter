@@ -2,6 +2,7 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import ListBooks from './ListBooks'
+
 class BooksApp extends React.Component {
   state = {
     /**
@@ -11,12 +12,35 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
-    books:[]
+    books:[],
+    shelfes : [{value:'currentlyReading',name:'Currently Reading'},
+             {value:'wantToRead',name:'Want to Read'},
+             {value:'read', name: 'Read'}
+            ]
   }
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({books:books})
     })
+  }
+
+
+  updatebookShelf = (book,shelf) =>{
+    
+    BooksAPI.update(book,shelf).then((data) =>{
+      
+      book.shelf=shelf;
+
+      let tempBook = this.state.books
+      tempBook.forEach((element, index) => {
+          if(element.id === book.id) {
+            tempBook[index] = book;
+          }
+        })
+      
+      this.setState({books:tempBook})
+    })
+   
   }
   render() {
     return (
@@ -45,6 +69,8 @@ class BooksApp extends React.Component {
         ) : (
           <ListBooks
             books={this.state.books}
+            shelfes={this.state.shelfes}
+            onUpdateBook={this.updatebookShelf}
            />
         )}
       </div>
