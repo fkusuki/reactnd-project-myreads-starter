@@ -28,20 +28,37 @@ class BooksApp extends React.Component {
     })
   }
 
-  updateQuery = (query) =>
+  updateQuery = (qry) =>
   {
-
-    this.setState({query : query.trim()})
-    BooksAPI.search(query).then((books) => {
+    
+    if(qry && qry.trim().length >0)
+    {
       
-      this.setState({resultBooks:books})
-    })
+      this.setState({query : qry})
+      BooksAPI.search(qry).then((result) => {
+        console.log(result)
+        if(result === undefined || result.error)
+        {
+          this.setState({resultBooks:[]})
+
+        } else {
+          this.setState({resultBooks:result})        
+        }
+      })
+
+    } else {
+     
+      this.clearQuery()
+     
+    }
   }
 
   clearQuery =() => {
     this.setState({query :''})
+    this.setState({resultBooks:[]})
   }
   updatebookShelf = (book,shelf) =>{
+    
     if(shelf==="none")
       return
     BooksAPI.update(book,shelf).then((data) =>{
@@ -49,12 +66,18 @@ class BooksApp extends React.Component {
       book.shelf=shelf;
 
       let tempBook = this.state.books
+      let isAddBook = true
       tempBook.forEach((element, index) => {
           if(element.id === book.id) {
             tempBook[index] = book;
+            isAddBook = false
           }
         })
-      
+
+      // add book on the shelf list
+      if(isAddBook){
+        tempBook.push(book)
+      }
       this.setState({books:tempBook})
     })
    
