@@ -30,10 +30,8 @@ class BooksApp extends React.Component {
 
   updateQuery = (qry) =>
   {
-    
     if(qry && qry.trim().length >0)
     {
-      
       this.setState({query : qry})
       BooksAPI.search(qry).then((result) => {
         
@@ -56,9 +54,7 @@ class BooksApp extends React.Component {
       })
 
     } else {
-     
       this.clearQuery()
-     
     }
   }
 
@@ -101,11 +97,9 @@ class BooksApp extends React.Component {
             <div className="search-books-bar">
               <Link className="close-search" to="/">Close</Link>
               <div className="search-books-input-wrapper">
-              
                 <input type="text" placeholder="Search by title or author" 
                   value={this.state.query} 
                   onChange={(event)=> this.updateQuery(event.target.value)}/>
-
               </div>
             </div>
             <div className="search-books-results">
