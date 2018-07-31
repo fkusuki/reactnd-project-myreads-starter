@@ -42,9 +42,16 @@ class BooksApp extends React.Component {
           this.setState({resultBooks:[]})
 
         } else {
-          let booksId = this.state.books.map((book)=> book.id);
-        
-          this.setState({resultBooks:result.filter((book)=> {return booksId.indexOf(book.id) === -1})})        
+          
+          this.setState({resultBooks: result.map((book)=> {
+
+            let bookFound = this.state.books.find(obj=>obj.id === book.id)
+
+            if(bookFound !== undefined)
+              return bookFound
+            else
+              return book
+          })})    
         }
       })
 
@@ -78,9 +85,8 @@ class BooksApp extends React.Component {
       // add book on the shelf list
       if(isAddBook){
         tempBook.push(book)
-        //remove book from search list
         
-        this.setState({resultBooks: searchListBook.filter((e)=> e.id !== book.id)})
+        this.setState({resultBooks: searchListBook})
       }
       this.setState({books:tempBook})
     })
