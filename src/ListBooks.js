@@ -10,14 +10,9 @@ class ListBooks extends Component
 	}
 	render() {
 		const{books,shelf,onUpdateBook} = this.props
-		let showingBooks
-		
-		if(shelf)
-		{
-			showingBooks = books.filter((x)=>x.shelf===shelf)
-		} else {
-			showingBooks = books
-		}
+		const showingBooks = !!shelf
+  			  ? books.filter(book => book.shelf === shelf)
+			  : books;
 		return(
 				<ol className="books-grid">
 					{showingBooks.map((book)=>(

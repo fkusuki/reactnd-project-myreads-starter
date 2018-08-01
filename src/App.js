@@ -22,10 +22,9 @@ class BooksApp extends React.Component {
              {value:'read', name: 'Read'}
             ]
   }
-  componentDidMount() {
-    BooksAPI.getAll().then((books) => {
-      this.setState({books:books})
-    })
+  async componentDidMount() {
+    const books = await BooksAPI.getAll()
+    this.setState({ books })
   }
 
   updateQuery = (qry) =>
